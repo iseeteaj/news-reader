@@ -19,7 +19,6 @@ class HomeScreen extends Component {
   handleNewsUpdate (response) {
     const results = response.data.response.results
     const news = []
-    console.log(results)
 
     results.forEach(function (result) {
       const existingSection = news.find(function getBySectionName (section) {
@@ -37,15 +36,14 @@ class HomeScreen extends Component {
     })
 
     this.setState({ news })
-    console.log(this.state.news)
   }
 
   componentDidMount () {
-    axios.get(`https://content.guardianapis.com/search?api-key=${API_KEY}`)
-    .then(response => {
-      this.handleNewsUpdate(response)
-    })
-    .catch(error => console.log(error))
+    axios.get(`https://content.guardianapis.com/search?api-key=${API_KEY}&show-fields=thumbnail`)
+      .then(response => {
+        this.handleNewsUpdate(response)
+      })
+      .catch(error => console.log(error))
   }
 
   render () {
@@ -53,16 +51,18 @@ class HomeScreen extends Component {
       return (
         <View>
           <SectionList
-            renderItem={({ item }) => (
+            renderItem={({item}) => (
               <NewsItem
                 id={item.id}
                 title={item.webTitle}
+                thumbnail={item.fields.thumbnail}
+                url={item}
                 navigation={this.props.navigation} />
-                        )}
+            )}
             keyExtractor={item => item.id}
             renderSectionHeader={({ section }) => <Header key={section.title} title={section.title} />}
             sections={this.state.news}
-                    />
+            />
         </View>
       )
     }

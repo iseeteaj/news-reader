@@ -1,0 +1,6 @@
+const styles = Stylesheet.create({
+  exampleHeader: {
+    backgroundColor: '#000000',
+    padding: 10
+  }
+})
